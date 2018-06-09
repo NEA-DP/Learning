@@ -5,19 +5,16 @@
     });
 })(["1+2", "2+2*2", "1-6/2"]);
 function parseStr(input) {
-    //реализация поддерживаемых операций
     var operations = {
         "*": function (x, y) { return parseFloat(x) * parseFloat(y); },
         "/": function (x, y) { return parseFloat(x) / parseFloat(y); },
         "+": function (x, y) { return parseFloat(x) + parseFloat(y); },
         "-": function (x, y) { return parseFloat(x) - parseFloat(y); },
     };
-    //порядок регулярных выражений в массиве определяет приоритет операции
     var parserRegExps = [
         new RegExp(/\d+[\*\/]\d+/),
         new RegExp(/\d+[-\+]\d+/)
     ];
-    //расчет части выражения
     var calculate = function (ex) {
         var exParts = ex.split(/\b/);
         return operations[exParts[1]](exParts[0], exParts[2]).toString();
@@ -35,3 +32,4 @@ function parseStr(input) {
     });
     return expression;
 }
+//# sourceMappingURL=parserApp.js.map

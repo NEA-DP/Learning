@@ -1,0 +1,4 @@
+https://www.typescriptlang.org/
+http://www.typescript-lang.ru/docs/
+https://metanit.com/web/typescript/
+http://canonium.com/articles/typescript-introducion
