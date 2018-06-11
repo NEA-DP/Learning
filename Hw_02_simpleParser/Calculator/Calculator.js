@@ -1,29 +1,19 @@
 "use strict";
 exports.__esModule = true;
-var Operations_1 = require("./../Operations/Operations");
+var Parser_1 = require("../Parser/Parser");
 var Calculator = /** @class */ (function () {
-    // private operations: IOperation[];
     function Calculator() {
-        for (var operationType in Operations_1.OperationType) {
-            if (!Number(operationType)) {
-                console.log(operationType);
-            }
-        }
-        var x = Operations_1.OperationsFabric.CreateOperation(Operations_1.OperationType.Addition);
+        this.parser = new Parser_1["default"](this.getRegExps());
     }
     Calculator.prototype.Calculate = function (expression) {
-        return "1";
+        return expression + " = " + this.parser.Parse(expression);
+    };
+    Calculator.prototype.getRegExps = function () {
+        return [
+            new RegExp(/\d+[\*\/]\d+/),
+            new RegExp(/\d+[-\+]\d+/)
+        ];
     };
     return Calculator;
 }());
 exports["default"] = Calculator;
-/*
-function xxx(): void {
-
-
-    let parserRegExps: RegExp[] = [
-        new RegExp(/\d+[\*\/]\d+/),
-        new RegExp(/\d+[-\+]\d+/)
-    ];
- let parser : IParser = new Parser([], parserRegExps);
-} */ 

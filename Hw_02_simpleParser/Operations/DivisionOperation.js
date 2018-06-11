@@ -17,7 +17,7 @@ var DivisionOperation = /** @class */ (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     DivisionOperation.prototype.Calculate = function (x, y) {
-        return x * y;
+        return x / y;
     };
     return DivisionOperation;
 }(Operations_1.OperationBase));

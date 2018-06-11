@@ -1,30 +1,24 @@
 import {OperationType, IOperation, OperationsFabric} from  "./../Operations/Operations";
-
+import IParser from "../Parser/IParser";
+import Parser from "../Parser/Parser";
 
 export default class Calculator {
 
-    // private operations: IOperation[];
+    private parser: IParser;
 
     constructor() {
-        for (let operationType in OperationType) {
-            if (!Number(operationType)) {
-                console.log(operationType);
-            }
-        }
-        var x: IOperation | null =OperationsFabric.CreateOperation(OperationType.Addition);
+        this.parser = new Parser(this.getRegExps());
     }
 
     public Calculate(expression: string):string {
-        return "1";
+        return `${expression} = ${this.parser.Parse(expression)}`;
+    }
+
+
+    private getRegExps(): RegExp[] {
+        return [
+            new RegExp(/\d+[\*\/]\d+/),
+            new RegExp(/\d+[-\+]\d+/)
+        ];
     }
 }
-/*
-function xxx(): void {
-
-
-    let parserRegExps: RegExp[] = [
-        new RegExp(/\d+[\*\/]\d+/),
-        new RegExp(/\d+[-\+]\d+/)
-    ];
- let parser : IParser = new Parser([], parserRegExps);
-} */

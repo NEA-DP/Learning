@@ -10,6 +10,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/systemjs/0.20.11/system.js"></script>
     
     <script>
+        
+        SystemJS.config({
+            baseURL: "./",
+            packages:{
+                "/":{defaultExtension: "js"}
+            }
+        });
         SystemJS.import('app.js');
     </script>
 
