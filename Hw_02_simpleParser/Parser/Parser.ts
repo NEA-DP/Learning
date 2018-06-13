@@ -9,7 +9,7 @@ export default class Parser implements IParser {
   private static Calculate: (ex: string) => string = (ex: string): string => {
         let exParts: string[] = ex.split(/\b/);
 
-        let ot: OperationType = OperationType[exParts[1]];
+        let ot: OperationType =  OperationType[<OperationType>exParts[1]];
 
         let operation: IOperation = OperationsFabric.CreateOperation(ot);
         return operation.Calculate(parseFloat(exParts[0]), parseFloat(exParts[2])).toString();
