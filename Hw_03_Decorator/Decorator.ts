@@ -1,6 +1,6 @@
 
-function format(target: any, propertyKey: any) {
-    let _val = this[propertyKey];
+function format(target: any, propertyKey: any): void {
+    let _val: number = target[propertyKey];
 
     let get_n: () => number = (): number => {
         console.log(`getter. stored value: ${_val}`);
@@ -13,7 +13,7 @@ function format(target: any, propertyKey: any) {
         _val = newVal;
     };
 
-    if (delete this[propertyKey]) {
+    if (delete target[propertyKey]) {
         Object.defineProperty(target, propertyKey, {
             get: get_n,
             set: set_n

@@ -5,7 +5,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 function format(target, propertyKey) {
-    let _val = this[propertyKey];
+    let _val = target[propertyKey];
     let get_n = () => {
         console.log(`getter. stored value: ${_val}`);
         console.log(`getter. will return 'stored value + 1'`);
@@ -15,7 +15,7 @@ function format(target, propertyKey) {
         console.log(`setter. argument: ${newVal}`);
         _val = newVal;
     };
-    if (delete this[propertyKey]) {
+    if (delete target[propertyKey]) {
         Object.defineProperty(target, propertyKey, {
             get: get_n,
             set: set_n
@@ -35,5 +35,4 @@ h.UpdateNumber(100);
 console.log(h.n);
 h.UpdateNumber(200);
 console.log(h.n);
-window.onload = () => { };
 //# sourceMappingURL=app.js.map
