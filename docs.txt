@@ -2,3 +2,7 @@ https://www.typescriptlang.org/
 http://www.typescript-lang.ru/docs/
 https://metanit.com/web/typescript/
 http://canonium.com/articles/typescript-introducion
+
+
+homeworks
+https://docs.google.com/spreadsheets/d/1uijlNS4OZjDhs4S2p97-7-M2Hydnr-3uedLuzF5_Z5w/edit#gid=0
