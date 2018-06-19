@@ -4,5 +4,7 @@ https://metanit.com/web/typescript/
 http://canonium.com/articles/typescript-introducion
 
 
+https://github.com/gdi2290/angular-starter
+
 homeworks
 https://docs.google.com/spreadsheets/d/1uijlNS4OZjDhs4S2p97-7-M2Hydnr-3uedLuzF5_Z5w/edit#gid=0

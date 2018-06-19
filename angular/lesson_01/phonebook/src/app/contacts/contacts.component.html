@@ -1,0 +1,18 @@
+<button (click)="add()">+</button>
+<table class="table">
+  <tr *ngFor="let person of people" (click)="onSelect(person)" [class.active]="person === selectedPerson">
+    <td>
+      {{person.order}}
+    </td>
+    <td>
+      {{person.name}}
+    </td>
+    <td>
+      {{person.number}}
+    </td>
+    <td>
+        <button (click)="delete(person)">-</button>
+    </td>
+  </tr>
+</table>
+<app-person-detail [person] = selectedPerson></app-person-detail>
