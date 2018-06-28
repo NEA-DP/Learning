@@ -31,7 +31,6 @@ export class ContactsComponent implements OnInit {
 
   add() {
     const p = this.contactService.createContact();
-    // this.router.navigate()
-    this.router.navigateByUrl(`/detail/${p.id}`);
+    this.router.navigate(['/detail', p.id]);
   }
 }
