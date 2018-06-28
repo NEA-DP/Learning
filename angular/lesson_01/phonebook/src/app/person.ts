@@ -1,5 +1,6 @@
 export class Person {
-    order: number;
+    id: number;
     name: string;
     number: string;
+    email: string;
 }

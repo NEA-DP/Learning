@@ -1,18 +1,33 @@
-<button (click)="add()">+</button>
-<table class="table">
-  <tr *ngFor="let person of people" (click)="onSelect(person)" [class.active]="person === selectedPerson">
-    <td>
-      {{person.order}}
-    </td>
-    <td>
-      {{person.name}}
-    </td>
-    <td>
-      {{person.number}}
-    </td>
-    <td>
-        <button (click)="delete(person)">-</button>
-    </td>
-  </tr>
+<br/>
+<table class="table table-hover">
+    <thead>
+      <th>#</th>
+      <th>Name</th>
+      <th>Phone</th>
+      <th>Email</th>
+      <th><a href="javascript:void(0)" (click)=add()>Add</a></th>
+      <th></th>
+    </thead>
+    <tbody>
+        <tr *ngFor="let person of people" >
+            <th scope=row>{{person.id}}</th>
+
+          <td>
+            {{person.name}}
+          </td>
+          <td>
+            {{person.number}}
+          </td>
+          <td>
+              {{person.email}}
+            </td>
+          <td>
+            <a routerLink="/detail/{{person.id}}">Edit</a>
+          </td>
+          <td>
+              <a href="javascript:void(0)" (click)=delete(person)>Delete</a>
+          </td>
+        </tr>
+    </tbody>
+
 </table>
-<app-person-detail [person] = selectedPerson></app-person-detail>
