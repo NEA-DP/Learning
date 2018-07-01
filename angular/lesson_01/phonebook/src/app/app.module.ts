@@ -9,16 +9,25 @@ import { AppRoutingModule } from './/app-routing.module';
 import { PagenotfoundComponent } from './pagenotfound/pagenotfound.component';
 import { AboutComponent } from './about/about.component';
 
+import { HttpClientModule } from '@angular/common/http';
+
+import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
+import { InMemoryDataServiceService } from './in-memory-data-service.service';
+import { SearchComponent } from './search/search.component';
+import { PersonAddComponent } from './person-add/person-add.component';
+
 @NgModule({
   declarations: [
     AppComponent,
     ContactsComponent,
     PersonDetailComponent,
     PagenotfoundComponent,
-    AboutComponent
+    AboutComponent,
+    SearchComponent,
+    PersonAddComponent
   ],
   imports: [
-    BrowserModule, FormsModule, AppRoutingModule
+    BrowserModule, FormsModule, AppRoutingModule, HttpClientInMemoryWebApiModule, HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

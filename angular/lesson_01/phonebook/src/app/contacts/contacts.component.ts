@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Person } from '../person';
 import { ContactService } from '../contact.service';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
   selector: 'app-contacts',
@@ -14,23 +14,30 @@ export class ContactsComponent implements OnInit {
 
   constructor(
     private contactService: ContactService,
-    private router: Router) { }
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
+  ) { }
 
   ngOnInit() {
-    this.loadContacts();
+    this.activatedRoute.params.subscribe(params => this.loadContacts(params['term']));
   }
 
-  loadContacts() {
-    this.people = this.contactService.getContacts();
+  loadContacts(term: string) {
+    if (term) {
+      this.contactService.serachContact(term).subscribe(contacts => this.people = contacts);
+    } else {
+      this.contactService.getContacts().subscribe(contacts => this.people = contacts);
+    }
   }
 
 
   delete(person: Person) {
-    this.contactService.deleteContact(person);
+    this.contactService.deleteContact(person).subscribe(_ => {
+      this.router.navigate(['/']);
+    });
   }
 
   add() {
-    const p = this.contactService.createContact();
-    this.router.navigate(['/detail', p.id]);
+    this.contactService.createContact().subscribe();
   }
 }

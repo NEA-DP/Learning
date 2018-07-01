@@ -2,34 +2,68 @@ import { Injectable } from '@angular/core';
 import { Person } from './person';
 import {Contacts} from './fake-contacts';
 import {LoggerService} from './logger.service';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable, throwError } from 'rxjs';
+import { tap, catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ContactService {
 
-  constructor(private logger: LoggerService) { }
+  private apiBaseUrl = 'http://localhost:17023/api/contacts';
 
-  getContacts(): Person[] {
-    this.logger.debug('contacts are loaging');
-    return Contacts;
+  constructor(
+    private logger: LoggerService,
+    private http: HttpClient
+  ) { }
+
+
+  getContacts(): Observable<Person[]> {
+    return this.http.get<Person[]>(`${this.apiBaseUrl}`)
+    .pipe(tap(contacts => this.logger.debug('contacts are loaded')));
   }
 
-  getContact(id: number): Person {
-    return Contacts.find(c => c.id === id);
+  getContact(id: number): Observable<Person> {
+    return this.http.get<Person>(`${this.apiBaseUrl}/${id}`)
+    .pipe(tap(contacts => this.logger.debug('contact is loaded')));
   }
 
-  createContact(): Person {
-    const newPerson = new Person();
-    newPerson.id = Contacts.length + 1;
-    Contacts.push(newPerson);
-    return newPerson;
+  updateContact(person: Person): Observable<any>  {
+    return this.http.put(`${this.apiBaseUrl}/${person.id}`, person).pipe(
+      catchError(this.handlerUpdateError())
+    );
   }
 
-  deleteContact(person: Person) {
-    const index: number = Contacts.indexOf(person);
-    if (index !== -1) {
-      Contacts.splice(index, 1);
-    }
+  handlerUpdateError() {
+    return (error: any) => {
+      this.logger.debug(error.message);
+      let messages: string[] = [];
+      if (error.error.ModelState) {
+        for (const field in error.error.ModelState) {
+          messages = messages.concat(error.error.ModelState[field]);
+        }
+      } else {
+        messages.push(error.message);
+      }
+
+      return throwError({
+        messages: messages
+      });
+    };
+  }
+
+  serachContact(term: string): Observable<Person[]> {
+    return this.http.get<Person[]>(`${this.apiBaseUrl}?term=${term}`)
+    .pipe(tap(contacts => this.logger.debug('search ')));
+  }
+
+  createContact(person: Person): Observable<any> {
+
+    return this.http.post(`${this.apiBaseUrl}/${person.id}`, person);
+  }
+
+  deleteContact(person: Person): Observable<any>  {
+    return this.http.delete(`${this.apiBaseUrl}/${person.id}`);
   }
 }

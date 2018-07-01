@@ -12,6 +12,7 @@ import { Location} from '@angular/common';
 export class PersonDetailComponent implements OnInit {
 
   person: Person;
+  errors: string[] = [];
 
   constructor(
     private contactService: ContactService,
@@ -27,16 +28,21 @@ export class PersonDetailComponent implements OnInit {
   loadContact() {
     const id = +this.activatedRoute.snapshot.paramMap.get('id');
 
-    const person = this.contactService.getContact(id);
-    if (person === undefined) {
-      this.router.navigate(['404']);
-    } else {
-      this.person = person;
-    }
+    this.contactService.getContact(id).subscribe(contact => {
+      if (contact === undefined) {
+        this.router.navigate(['404']);
+      } else {
+        this.person = contact;
+      }
+    });
   }
 
   goBack() {
     this.location.back();
   }
 
+  save() {
+    this.contactService.updateContact(this.person)
+    .subscribe(() => this.goBack(), errors => this.errors = errors.messages);
+  }
 }

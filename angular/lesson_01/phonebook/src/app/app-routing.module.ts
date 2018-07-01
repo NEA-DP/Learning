@@ -4,11 +4,15 @@ import { ContactsComponent } from './contacts/contacts.component';
 import { PersonDetailComponent } from './person-detail/person-detail.component';
 import { PagenotfoundComponent } from './pagenotfound/pagenotfound.component';
 import { AboutComponent } from './about/about.component';
+import { PersonAddComponent } from './person-add/person-add.component';
+
 
 
 
 const routes: Routes = [
   {path: '', redirectTo: '/contacts', pathMatch: 'full'},
+  {path: 'contacts/:term', component: ContactsComponent},
+  {path: 'add', component: PersonAddComponent},
   {path: 'contacts', component: ContactsComponent},
   {path: 'about', component: AboutComponent},
   {path: 'detail/:id', component: PersonDetailComponent},
