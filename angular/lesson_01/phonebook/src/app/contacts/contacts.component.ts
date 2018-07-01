@@ -37,7 +37,5 @@ export class ContactsComponent implements OnInit {
     });
   }
 
-  add() {
-    this.contactService.createContact().subscribe();
-  }
+
 }
