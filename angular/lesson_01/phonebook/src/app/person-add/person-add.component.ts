@@ -12,6 +12,7 @@ import { Location} from '@angular/common';
 export class PersonAddComponent implements OnInit {
 
   person: Person;
+  people: Person[];
   errors: string[] = [];
 
   constructor(
@@ -22,8 +23,11 @@ export class PersonAddComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.contactService.getContacts().subscribe(contacts => this.people = contacts);
     this.person = new Person();
-    this.person.id = 11;
+    const ids = this.people.map(function(p) { return p.id; });
+    const id = Math.max.apply(null, ids) + 1;
+    this.person.id = id;
   }
 
 
@@ -32,10 +36,9 @@ export class PersonAddComponent implements OnInit {
   }
 
 
-  add() {
-    this.contactService.createContact(this.person).subscribe(_ => {
-      this.router.navigate(['/']);
-    });
-  }
 
+  save() {
+    this.contactService.createContact(this.person)
+    .subscribe(() => this.router.navigate(['contacts']), errors => this.errors = errors.messages);
+  }
 }

@@ -60,7 +60,9 @@ export class ContactService {
 
   createContact(person: Person): Observable<any> {
 
-    return this.http.post(`${this.apiBaseUrl}/${person.id}`, person);
+    return this.http.post(`${this.apiBaseUrl}/${person.id}`, person).pipe(
+      catchError(this.handlerUpdateError())
+    );
   }
 
   deleteContact(person: Person): Observable<any>  {

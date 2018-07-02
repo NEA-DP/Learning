@@ -32,9 +32,7 @@ export class ContactsComponent implements OnInit {
 
 
   delete(person: Person) {
-    this.contactService.deleteContact(person).subscribe(_ => {
-      this.router.navigate(['/']);
-    });
+    this.contactService.deleteContact(person).subscribe(() => this.router.navigate(['contacts']) );
   }
 
 
