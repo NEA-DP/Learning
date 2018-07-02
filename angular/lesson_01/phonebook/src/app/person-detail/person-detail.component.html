@@ -1,6 +1,11 @@
 <div *ngIf="person" class="form-horizontal">
-  
-  <hr>
+  <div class = "page-header">
+    <h1>
+      Edit
+      <small>contact</small>
+   </h1>
+  </div>
+
   <div class="validation-summary-errors text-danger" *ngIf="errors.length">
     <ul *ngFor="let error of errors">
       <li>{{error}}</li>
