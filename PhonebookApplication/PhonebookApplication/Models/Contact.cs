@@ -11,6 +11,8 @@ namespace PhonebookApplication.Models
     {
         [JsonProperty("id")]
         public int Id { get; set; }
+
+
         [JsonProperty("name")]
         [Required]
         public string Name { get; set; }
@@ -19,6 +21,7 @@ namespace PhonebookApplication.Models
         [JsonProperty("number")]
         [Required]
         public string Phone { get; set; }
+
         [JsonProperty("email")]
         public string Email { get; set; }
     }

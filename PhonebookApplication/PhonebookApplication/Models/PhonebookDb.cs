@@ -39,8 +39,8 @@ namespace PhonebookApplication.Models
                 context.Contacts.Add(new Contact
                 {
                     Name = name,
-                    Email = $"{name.Replace(" ", string.Empty)}.gmail.com",
-                    Phone = "222333"//Math.Abs((int)name.GetTypeCode()).ToString().Substring(0, 6).PadRight(0, '0')
+                    Email = $"{name.Replace(" ", string.Empty)}@gmail.com",
+                    Phone = Math.Abs(name.GetHashCode()).ToString().Substring(0, 6).PadRight(0, '0')
                 });
             }
             base.Seed(context);
