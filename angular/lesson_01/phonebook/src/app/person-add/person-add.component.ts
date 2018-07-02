@@ -23,11 +23,12 @@ export class PersonAddComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.contactService.getContacts().subscribe(contacts => this.people = contacts);
-    this.person = new Person();
-    const ids = this.people.map(function(p) { return p.id; });
-    const id = Math.max.apply(null, ids) + 1;
-    this.person.id = id;
+    this.contactService.getContacts().subscribe(contacts => {this.people = contacts;
+      this.person = new Person();
+      const ids = this.people.map(function(p) { return p.id; });
+      const id = Math.max.apply(null, ids) + 1;
+      this.person.id = id;
+    });
   }
 
 
