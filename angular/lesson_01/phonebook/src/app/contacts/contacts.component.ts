@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Person } from '../person';
 import { ContactService } from '../contact.service';
 import {ActivatedRoute, Router} from '@angular/router';
+import { Location} from '@angular/common';
 
 @Component({
   selector: 'app-contacts',
@@ -16,6 +17,7 @@ export class ContactsComponent implements OnInit {
     private contactService: ContactService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
+    private location: Location,
   ) { }
 
   ngOnInit() {
@@ -32,7 +34,13 @@ export class ContactsComponent implements OnInit {
 
 
   delete(person: Person) {
-    this.contactService.deleteContact(person).subscribe(() => this.router.navigate(['contacts']) );
+    this.contactService.deleteContact(person).subscribe(pp => {
+      const x = this.people.find(p => p.id === pp.id);
+      const index = this.people.indexOf(x);
+      if (index > -1) {
+        this.people.splice(index, 1);
+      }
+    } );
   }
 
 
