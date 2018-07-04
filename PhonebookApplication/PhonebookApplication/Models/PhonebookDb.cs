@@ -10,6 +10,8 @@ namespace PhonebookApplication.Models
     {
         public DbSet<Contact> Contacts { get; set; }
 
+        public DbSet<Group> Groups { get; set; }
+
         static PhonebookDb()
         {
             Database.SetInitializer<PhonebookDb>(new Phonebook());
@@ -32,17 +34,32 @@ namespace PhonebookApplication.Models
             "Rhonda Freeman"
         };
 
+        public readonly string[] groupNames =
+        {
+            "Family",
+            "Friends",
+            "Coworkers"
+        };
+
         protected override void Seed(PhonebookDb context)
         {
+            var r = new Random();
+
+            var groups = groupNames.Select((gn, id) => new Group { Name = gn, Id = id });
+            context.Groups.AddRange(groups);
+
             foreach (var name in names)
             {
                 context.Contacts.Add(new Contact
                 {
                     Name = name,
                     Email = $"{name.Replace(" ", string.Empty)}@gmail.com",
-                    Phone = Math.Abs(name.GetHashCode()).ToString().Substring(0, 6).PadRight(0, '0')
+                    Phone = Math.Abs(name.GetHashCode()).ToString().Substring(0, 6).PadRight(0, '0'),
+                    GroupId = groups.FirstOrDefault(g => g.Id == r.Next(1, 5))?.Id
                 });
             }
+            
+
             base.Seed(context);
         }
     }

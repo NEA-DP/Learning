@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Person } from '../person';
 import { ContactService } from '../contact.service';
-import {ActivatedRoute, Router} from '@angular/router';
-import { Location} from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
+import { GroupService } from '../group.service';
+import { Observable, forkJoin, of } from 'rxjs';
+import { switchMap, tap, map, finalize } from 'rxjs/operators';
+import { PersonVm } from '../personVm';
 
 @Component({
   selector: 'app-contacts',
@@ -11,37 +14,71 @@ import { Location} from '@angular/common';
 })
 export class ContactsComponent implements OnInit {
 
-  people: Person[];
+  contacts: Observable<PersonVm[]>;
+
+  isLoading = false;
 
   constructor(
     private contactService: ContactService,
-    private router: Router,
-    private activatedRoute: ActivatedRoute,
-    private location: Location,
+    private groupService: GroupService,
+    private activatedRoute: ActivatedRoute
   ) { }
 
   ngOnInit() {
-    this.activatedRoute.params.subscribe(params => this.loadContacts(params['term']));
+    this.contacts = this.activatedRoute
+      .params
+      .pipe(
+        tap(() => this.isLoading = true),
+        switchMap(params => this.getContacts(params['term'])
+          .pipe(
+            finalize(() => this.isLoading = false)
+          )
+        )
+      );
   }
 
-  loadContacts(term: string) {
+  getContacts(term: string): Observable<PersonVm[]> {
+    let getContacts: Observable<Person[]>;
+
     if (term) {
-      this.contactService.serachContact(term).subscribe(contacts => this.people = contacts);
+      getContacts = this.contactService.serachContacts(term);
     } else {
-      this.contactService.getContacts().subscribe(contacts => this.people = contacts);
+      getContacts = this.contactService.getContacts();
     }
+
+    return forkJoin(
+      getContacts,
+      this.groupService.getGroups()
+    ).pipe(
+      map(([contacts, groups]) => {
+        const result: PersonVm[] = [];
+        contacts.forEach(c => {
+          let groupName = '';
+          if (c.groupId) {
+            const group = groups.find(g => g.id === c.groupId);
+            if (group) {
+              groupName = group.name;
+            }
+          }
+          result.push(PersonVm.createPersonVm(c, groupName));
+        });
+        return result;
+      })
+    );
   }
 
-
-  delete(person: Person) {
-    this.contactService.deleteContact(person).subscribe(pp => {
-      const x = this.people.find(p => p.id === pp.id);
-      const index = this.people.indexOf(x);
-      if (index > -1) {
-        this.people.splice(index, 1);
-      }
-    } );
+  delete(id: number) {
+    this.contactService.deleteContact(id).
+      subscribe(dc => {
+        this.contacts = this.contacts.pipe(
+          tap(cs => {
+            const x = cs.find(c => c.id === (<PersonVm>dc).id);
+            const index = cs.indexOf(x);
+            if (index > -1) {
+              cs.splice(index, 1);
+            }
+          })
+        );
+      });
   }
-
-
 }

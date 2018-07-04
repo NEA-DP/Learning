@@ -14,57 +14,57 @@ using PhonebookApplication.Models;
 namespace PhonebookApplication.Controllers
 {
     [EnableCors("*", "*", "*")]
-    public class ContactsController : ApiController
+    public class GroupsController : ApiController
     {
         private PhonebookDb db = new PhonebookDb();
-        
-        // GET: api/Contacts
-        public IQueryable<Contact> GetContacts(string term = null)
+
+        // GET: api/Groups
+        public IQueryable<Group> GetGroups(string term = null)
         {
-            var query = db.Contacts;
+            var query = db.Groups;
             if (string.IsNullOrEmpty(term))
             {
                 return query;
             }
-            return query.Where(i=>i.Name.Contains(term) || i.Phone.Contains(term));
+            return query.Where(i => i.Name.Contains(term));
         }
 
-        // GET: api/Contacts/5
-        [ResponseType(typeof(Contact))]
-        public IHttpActionResult GetContact(int id)
+        // GET: api/Groups/5
+        [ResponseType(typeof(Group))]
+        public IHttpActionResult GetGroup(int id)
         {
-            Contact contact = db.Contacts.Find(id);
-            if (contact == null)
+            Group group = db.Groups.Find(id);
+            if (group == null)
             {
                 return NotFound();
             }
 
-            return Ok(contact);
+            return Ok(group);
         }
 
-        // PUT: api/Contacts/5
+        // PUT: api/Groups/5
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutContact(int id, Contact contact)
+        public IHttpActionResult PutGroup(int id, Group group)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != contact.Id)
+            if (id != group.Id)
             {
                 return BadRequest();
             }
 
-            db.Entry(contact).State = EntityState.Modified;
+            db.Entry(group).State = EntityState.Modified;
 
             try
             {
                 db.SaveChanges();
             }
-            catch (DbUpdateConcurrencyException ex)
+            catch (DbUpdateConcurrencyException)
             {
-                if (!ContactExists(id))
+                if (!GroupExists(id))
                 {
                     return NotFound();
                 }
@@ -77,35 +77,35 @@ namespace PhonebookApplication.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // POST: api/Contacts
-        [ResponseType(typeof(Contact))]
-        public IHttpActionResult PostContact(Contact contact)
+        // POST: api/Groups
+        [ResponseType(typeof(Group))]
+        public IHttpActionResult PostGroup(Group group)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            db.Contacts.Add(contact);
+            db.Groups.Add(group);
             db.SaveChanges();
 
-            return CreatedAtRoute("DefaultApi", new { id = contact.Id }, contact);
+            return CreatedAtRoute("DefaultApi", new { id = group.Id }, group);
         }
 
-        // DELETE: api/Contacts/5
-        [ResponseType(typeof(Contact))]
-        public IHttpActionResult DeleteContact(int id)
+        // DELETE: api/Groups/5
+        [ResponseType(typeof(Group))]
+        public IHttpActionResult DeleteGroup(int id)
         {
-            Contact contact = db.Contacts.Find(id);
-            if (contact == null)
+            Group group = db.Groups.Find(id);
+            if (group == null)
             {
                 return NotFound();
             }
 
-            db.Contacts.Remove(contact);
+            db.Groups.Remove(group);
             db.SaveChanges();
 
-            return Ok(contact);
+            return Ok(group);
         }
 
         protected override void Dispose(bool disposing)
@@ -117,9 +117,9 @@ namespace PhonebookApplication.Controllers
             base.Dispose(disposing);
         }
 
-        private bool ContactExists(int id)
+        private bool GroupExists(int id)
         {
-            return db.Contacts.Count(e => e.Id == id) > 0;
+            return db.Groups.Count(e => e.Id == id) > 0;
         }
     }
 }
